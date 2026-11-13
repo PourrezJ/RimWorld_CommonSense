@@ -1,0 +1,35 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <AssemblyName>CommonSense</AssemblyName>
+    <RootNamespace>CommonSense</RootNamespace>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <RimWorldDir Condition="'$(RimWorldDir)' == ''">$(HOME)/.steam/steam/steamapps/common/RimWorld</RimWorldDir>
+    <DebugType>none</DebugType>
+    <DebugSymbols>false</DebugSymbols>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(RimWorldDir)/Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityStubs">
+      <HintPath>$(RimWorldDir)/UnityStubs.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Waylith">
+      <HintPath>$(RimWorldDir)/Waylith.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <PackageReference Include="Lib.Harmony" Version="3.0.0-rc.5" ExcludeAssets="runtime" />
+  </ItemGroup>
+  <!-- Keep generated NuGet files out of the playable mod package. -->
+  <Target Name="CopyReleaseAssemblyToMod" AfterTargets="Build" Condition="'$(Configuration)' == 'Release'">
+    <MakeDir Directories="$(MSBuildProjectDirectory)/../../../1.7/Assemblies" />
+    <Copy SourceFiles="$(TargetPath)" DestinationFiles="$(MSBuildProjectDirectory)/../../../1.7/Assemblies/CommonSense.dll" />
+  </Target>
+</Project>
